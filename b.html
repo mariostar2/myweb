@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테스트1</title>
+    <link rel="stylesheet" href="css/style2.css">
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const ticker = document.getElementById("noticeTicker");
+    if (!ticker) return;
+
+    const items = ticker.querySelectorAll("li");
+    let currentIndex = 0;
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % items.length;
+        ticker.style.transform = `translateY(-${currentIndex * 20}px)`;
+    }, 3000);
+});
+// [2단] 검색 유효성 검사 & 알림 클릭 이벤트
+document.addEventListener("DOMContentLoaded", () => {
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const notiBtn = document.getElementById("notiBtn");
+
+    if (searchForm) {
+        searchForm.addEventListener("submit", (e) => {
+            if (!searchInput.value.trim()) {
+                e.preventDefault();
+                alert("검색어를 입력해 주세요!");
+                searchInput.focus();
+            }
+        });
+    }
+
+    if (notiBtn) {
+        notiBtn.addEventListener("click", () => {
+            alert("새로운 알림이 없습니다.");
+        });
+    }
+});
+// [3단] 카테고리 탭 클릭 활성화
+document.addEventListener("DOMContentLoaded", () => {
+    const categoryLinks = document.querySelectorAll("#categoryTabs a");
+
+    categoryLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            categoryLinks.forEach((item) => item.classList.remove("active"));
+            link.classList.add("active");
+        });
+    });
+});
+// [4단] 배너 도트 변경 및 상품 동적 데이터 렌더링
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. 배너 인디케이터(Dots)
+    const dots = document.querySelectorAll("#bannerDots .dot");
+    dots.forEach((dot, index) => {
+        dot.addEventListener("click", () => {
+            dots.forEach((d) => d.classList.remove("active"));
+            dot.classList.add("active");
+        });
+    });
+
+    // 2. 동적 상품 데이터 렌더링 (예시 JSON 데이터 기반)
+    const products = [
+        { price: "₩ 1,500", tag: "送料込み", cod: false, img: "image/images1.jpg" },
+        { price: "₩ 12,800", tag: "送料込み", cod: false, img: "image/images1.jpg" },
+        { price: "₩ 3,200", tag: "着払い", cod: true, img: "image/images1.jpg" },
+        { price: "₩ 5,400", tag: "送料込み", cod: false, img: "image/images1.jpg" }
+    ];
+
+    const productGrid = document.getElementById("productGrid");
+    if (productGrid) {
+        productGrid.innerHTML = products.map((item) => `
+            <article class="product-card">
+                <div class="product-img"><img src="${item.img}" alt="상품 이미지"></div>
+                <div class="product-info">
+                    <p class="price">${item.price}</p>
+                    <span class="shipping-tag ${item.cod ? 'cod' : ''}">${item.tag}</span>
+                </div>
+            </article>
+        `).join("");
+    }
+});
+// [5단] 푸터 및 공통 초기화
+console.log("메루카리 레이아웃 스크립트 로드 완료 (v1.2.0)");
+</script>
+<body>
+
+    <!-- [Layer 1] 상단 유틸리티 바 -->
+    <div class="top-utilbar">
+        <div class="container util-flex">
+            <div class="notice">
+                <span class="notice-title">🚨 [공지/알림]</span>
+                <div class="ticker-box">
+                    <ul class="ticker-list">
+                        <li><a href="#">메루카리 포인트 환원 캠페인 진행 중 (~10/31)</a></li>
+                        <li><a href="#">무단 도용 및 방지 (~10/31)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="util-menu">
+                <a href="#">로그인</a> | <a href="#">회원가입</a> | <a href="#">통장입금</a> | <a href="#">고객센터</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- [Layer 2] 헤더 (로고, 검색바, 마이페이지) & 카테고리 네비게이션 -->
+    <header class="logobar">
+        <div class="container header-inner">
+            <h1 class="header-logo">
+                <a href="#">
+                    <img src="https://merukai.com/skin/default/images/headfoot/logo1.png" alt="메루카리 로고">
+                </a>
+            </h1>
+            <div class="search-area">
+                <form action="#" method="get">
+                    <input type="text" name="search" placeholder="무엇을 찾고 계신가요?">
+                    <button type="submit" class="search_btn">
+                        <img src="https://merukai.com/skin/default/images/headfoot/search-btn.png" alt="검색하기">
+                    </button>
+                </form>
+            </div>
+            <div class="header-icons">
+                <a href="#" class="icon-link" aria-label="알림">🔔</a>
+                <a href="#" class="mypage-link">마이페이지</a>
+            </div>
+        </div>
+
+        <!-- [Layer 3] 카테고리 네비게이션 (GNAV) -->
+        <nav class="category-nav">
+            <div class="container">
+                <ul class="category-tabs">
+                    <li><a href="#" class="active">추천</a></li>
+                    <li><a href="#">패션</a></li>
+                    <li><a href="#">전자기기</a></li>
+                    <li><a href="#">트레이딩카드</a></li>
+                    <li><a href="#">게임</a></li>
+                    <li><a href="#">브랜드</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- [Layer 4] 메인 콘텐츠 영역 -->
+    <main class="main-container container">
+
+        <!-- 프로모션 배너 -->
+        <section class="promo-banner-section" aria-label="프로모션 배너">
+            <div class="promo-banner">
+                <div class="banner-content">
+                    <h2>메루카리 프로모션 배너</h2>
+                    <p>- 메루카리 카드(Mercari Card) 첫 발급 시 3,000P 증정!</p>
+                    <p class="sub-text">(자동 슬라이드 및 좌우 가로 스크롤 swipe 가능)</p>
+                </div>
+                <div class="banner-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 퀵 아이콘 메뉴 -->
+        <section class="quick-icons-section" aria-label="빠른 실행 메뉴">
+            <ul class="quick-icons-grid">
+                <li><a href="#"><div class="icon-box">📷</div><span>출품하기</span></a></li>
+                <li><a href="#"><div class="icon-box">💳</div><span>메루페이</span></a></li>
+                <li><a href="#"><div class="icon-box">🏪</div><span>메루카리 샵</span></a></li>
+                <li><a href="#"><div class="icon-box">₿</div><span>비트코인</span></a></li>
+                <li><a href="#"><div class="icon-box">🎟️</div><span>쿠폰받기</span></a></li>
+            </ul>
+        </section>
+
+        <!-- 중단 배너 -->
+        <section class="mid-banner-section" aria-label="이벤트 안내">
+            <div class="mid-banner">
+                <span class="banner-text">🎁 친구 초대 코드 입력 시 500pt 100% 지급!</span>
+                <a href="#" class="banner-btn">자세히 &gt;</a>
+            </div>
+        </section>
+
+        <!-- 추천 상품 리스트 -->
+        <section class="product-feed-section">
+            <h2 class="section-title">당신을 위한 추천 상품 (おすすめ)</h2>
+            <div class="product-grid">
+                <article class="product-card">
+                    <div class="product-img"><img src="image/images1.jpg" alt="상품 이미지"></div>
+                    <div class="product-info">
+                        <p class="price">₩ 1,500</p>
+                        <span class="shipping-tag">送料込み</span>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-img"><img src="image/images1.jpg" alt="상품 이미지"></div>
+                    <div class="product-info">
+                        <p class="price">₩ 12,800</p>
+                        <span class="shipping-tag">送料込み</span>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-img"><img src="image/images1.jpg" alt="상품 이미지"></div>
+                    <div class="product-info">
+                        <p class="price">₩ 3,200</p>
+                        <span class="shipping-tag cod">着払い</span>
+                    </div>
+                </article>
+                <article class="product-card">
+                    <div class="product-img"><img src="image/images1.jpg" alt="상품 이미지"></div>
+                    <div class="product-info">
+                        <p class="price">₩ 5,400</p>
+                        <span class="shipping-tag">送料込み</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 플로팅 액션 버튼 (화면 고정 레이어) -->
+    <aside class="floating-sell-bar">
+        <a href="#" class="floating-sell-btn">📷 출품하기</a>
+    </aside>
+
+    <!-- [Layer 5] 푸터 영역 -->
+    <footer class="footer-area">
+        <div class="container">
+            <p><strong>고객센터:</strong> 1588-0000 | <a href="#">FAQ / 1:1 문의</a></p>
+            <p><a href="#">회사소개</a> | <a href="#">이용약관</a> | <a href="#">개인정보처리방침</a></p>
+            <p class="version">Ver 1.2.0</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

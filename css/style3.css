@@ -1,0 +1,449 @@
+/*초기값*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333333;
+    background-color: #f7f7f7;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* 1. 최상단 유틸 */
+.top-utill {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-size: 11px;
+    padding: 6px 0;
+}
+
+.util-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notice-title {
+    color: #ff3b30;
+    font-weight: bold;
+}
+
+.notice-box .ticket-list {
+    display: flex;
+    gap: 12px;
+}
+
+.notice-box .ticket-list a {
+    color: #ffffff;
+}
+
+.notice-box .ticket-list a:hover {
+    text-decoration: underline;
+}
+
+.util-memu {
+    color: #666666;
+}
+
+.util-memu a {
+    color: #ffffff;
+    margin: 0 4px;
+}
+
+/* 2. 로고 및 검색 해더*/
+.logobar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    gap: 16px;
+}
+
+.header-logo img {
+    height: 30px;
+    object-fit: contain;
+}
+
+.search-area {
+    flex: 1;
+    max-width: 480px;
+}
+
+.search-area form {
+    display: flex;
+    align-items: center;
+    background-color: #f2f2f2;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+.search-area input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: #333;
+}
+
+.search_btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+}
+
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.mypage-link {
+    font-size: 12px;
+    color: #333;
+}
+
+/* 3. 카테고리 네비 */
+.category-nav {
+    border-top: 1px solid #f0f0f0;
+}
+
+.nav-list {
+    display: flex;
+    gap: 24px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.nav-item {
+    font-size: 13px;
+    color: #444444;
+    padding: 4px 12px;
+    border-radius: 16px;
+    transition: all 0.2s;
+}
+
+.nav-item.active {
+    background-color: #ff3b30;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.nav-item:hover:not(.active) {
+    color: #ff3b30;
+}
+
+/* 메인 영역 */
+.main-container {
+    padding-top: 20px;
+    padding-bottom: 80px;
+}
+
+
+.promo-banner-section {
+    margin-bottom: 16px;
+    position: relative;
+    width: 100%;
+}
+
+.promo-banner {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* 가로 스크롤 영역 */
+.banner-scorll {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.banner-scorll::-webkit-scrollbar {
+    display: none;
+}
+
+/* 각각의 배너 배너 카드 */
+.banner-content {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    background: linear-gradient(135deg, #ff4f5e 0%, #ff3b30 100%);
+    color: #ffffff;
+    padding: 28px 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.banner-content:nth-child(1) {
+    background: linear-gradient(135deg, #ff4f5e 0%, #ff3b30 100%);
+}
+
+
+.banner-content:nth-child(2) {
+    background: linear-gradient(135deg, #2196f3 0%, #1e88e5 100%);
+}
+
+
+.banner-content:nth-child(3) {
+    background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+}
+
+.banner-content h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.banner-content p {
+    font-size: 13px;
+}
+
+.banner-content .sub-text {
+    font-size: 11px;
+    opacity: 0.85;
+    margin-top: 4px;
+}
+
+.banner-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot.active {
+    background-color: #ff3b30;
+}
+
+.quick-icons-section {
+    margin-bottom: 16px;
+}
+
+.quick-icons-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background-color: #ffffff;
+    padding: 16px 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.quick-icons-grid a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #333;
+}
+
+.icon-box {
+    font-size: 20px;
+}
+
+/*배너 */
+
+.mid-banner-section {
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.mid-banner {
+    background-color: #fffbe6;
+    border: 1px solid #ffe58f;
+    padding: 12px 16px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    box-sizing: border-box;
+    gap: 12px;
+}
+
+
+.banner-text {
+    color: #333333;
+}
+
+.banner-btn {
+    font-size: 12px;
+    color: #ff3b30;
+    font-weight: bold;
+}
+
+
+.product-feed-section {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #222222;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.product-card {
+    background-color: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.product-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-img img {
+    width: 85%;
+    height: 85%;
+    object-fit: contain;
+}
+
+.product-info {
+    padding: 10px 12px;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 14px;
+    color: #111111;
+    margin-bottom: 4px;
+}
+
+.shipping-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 4px;
+    border-radius: 2px;
+}
+
+.shipping-tag.included {
+    background-color: #f2f2f2;
+    color: #666666;
+}
+
+.shipping-tag.cod {
+    background-color: #fff0f0;
+    color: #ff3b30;
+}
+
+
+.footer-area {
+    background-color: #ffffff;
+    border-top: 1px solid #e5e5e5;
+    color: #777777;
+    padding: 24px 0;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.footer-area a {
+    color: #777777;
+}
+
+.footer-area .version {
+    margin-top: 4px;
+    color: #aaaaaa;
+}
+
+.floating-btn-wrap {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+}
+
+.floating-sell-btn {
+    background-color: #ff3b30;
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 반응형 모바일 처리 */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

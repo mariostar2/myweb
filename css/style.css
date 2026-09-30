@@ -1,0 +1,53 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+ul{
+    width: 100vw;
+    list-style: none;
+
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+.menu {
+    display: flex;
+    background-color: #333;
+    justify-content: center;
+}
+.menu > li {
+    position: relative;
+}
+.menu > li > a {
+    display: block;
+    padding: 15px 30px;
+    color: white;
+}
+/* �쒕툕硫붾돱 */
+.sub-menu {
+    display: none;
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    width: 150px;
+    background-color: white;
+    border: 1px solid #ddd;
+}
+/* 留덉슦�ㅻ� �щ━硫� �쒕툕硫붾돱 �쒖떆 */
+.menu > li:hover .sub-menu {
+    display: block;
+}
+.sub-menu a {
+    display: block;
+    padding: 12px 15px;
+}
+
+.sub-menu a:hover {
+    background-color: #eee;
+}
