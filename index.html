@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNK 부산은행</title>
+    <style>
+
+    .siteNav {
+        width: 100%;
+        border-bottom: 2px solid #ff0000;
+        background-color: #fff;
+    }
+
+    .mainNav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px 20px;
+        box-sizing: border-box;
+    }
+
+    .right-group {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .logo-busan {
+        display: block;
+        width: 132px;
+        height: 21px;
+        background: url('https://www.busanbank.co.kr/resource/img/tit/h1_busanbank_new.png') no-repeat center;
+        background-size: contain;
+        margin: 0;
+    }
+
+    .logo-busan a {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .main-menu {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-menu li a {
+        padding: 6px 0 3px;
+        font-size: 17px;
+        font-weight: bold;
+        color: #212121;
+        text-decoration: none;
+        line-height: 1.4;
+    }
+
+    .btn-search {
+        width: 110px;
+        height: 32px;
+        padding-left: 25px;
+        border: 1px solid #e0e0e1;
+        border-radius: 4px;
+        background: url('https://www.busanbank.co.kr/resource/img/ico/cmn/ico_gnb_search.png') no-repeat 10px center;
+        background-color: #fff;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .btn-allmemu {
+        width: 110px;
+        height: 32px;
+        padding-left: 25px;
+        border: 1px solid #e0e0e1;
+        border-radius: 4px;
+        background: url('https://www.busanbank.co.kr/resource/img/ico/cmn/ico_gnb_allmenu.png') no-repeat 10px center;
+        background-color: #fff;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .containerWrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+
+    .area {
+        display: flex;
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .kv-area {
+        flex: 7;
+        display: flex;
+    }
+
+    .kv-area img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 8px;
+        /*object-fit: cover;*/
+    }
+
+    .sub-menu-box {
+        flex: 5;
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e1;
+        border-radius: 8px;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+
+    .sub-menu-box h3 {
+        margin-top: 0;
+        font-size: 18px;
+        color: #212121;
+    }
+
+    .quick-menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 0 0;
+    }
+
+    .quick-menu-list li {
+        margin-bottom: 12px;
+    }
+
+    .quick-menu-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    .quick-menu-list li a {
+        display: block;
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .quick-menu-list li a:hover {
+        background-color: #ff0000;
+        color: #fff;
+        border-color: #ff0000;
+    }
+
+    footer {
+        width: 100%;
+        background-color: #fffdfd;
+        color: #bbb;
+        padding: 40px 0;
+        font-size: 13px;
+        border-top: 3px solid #ff0000;
+        margin-top: 40px;
+        box-sizing: border-box;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .footer-links {
+        display: flex;
+        margin: 0;
+        gap: 30px;
+        font-weight: bold;
+    }
+
+    .footer-links a {
+        color: #ccc;
+        text-decoration: none;
+    }
+
+    .footer-links a:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+</style>
+</head>
+
+<body>
+    <div id="wrap">
+
+        <div class="siteNav">
+            <div class="mainNav">
+                <h1 class="logo-busan">
+                    <a href="https://www.busanbank.co.kr" title="부산은행 홈으로 가기"></a>
+                </h1>
+                <div class="right-group">
+                    <ul class="main-menu">
+                        <li><a href="#">개인뱅킹</a></li>
+                        <li><a href="#">기업뱅킹</a></li>
+                        <li><a href="#">금융상품</a></li>
+                    </ul>
+                    <div class="search-area">
+                        <button type="button" class="btn-search" title="검색하기">검색하기</button>
+                    </div>
+                    <div class="all-memu">
+                        <button type="button" class="btn-allmemu" title="전체메뉴">전체</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="body-container">
+            <div class="containerWrap">
+                <div class="area">
+                    <div class="kv-area">
+                        <img src="https://www.busanbank.co.kr/upload/bhp/vupload/banner/banner/[%EB%B9%84%EB%8C%80%EB%A9%B4%EB%B2%95%EC%9D%B8%EA%B3%84%EC%A2%8C%EA%B0%9C%EC%84%A4]%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80.png"
+                            alt="배너 이미지">
+                    </div>
+                    <div class="sub-menu-box">
+                        <h3>빠른 메뉴</h3>
+                        <ul class="quick-menu-list">
+                            <li><a href="#">인증서 관리</a></li>
+                            <li><a href="#">계좌조회</a></li>
+                            <li><a href="#">이체하기</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단 푸터 -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-links">
+                    <a href="#">개인정보처리방침</a>
+                    <a href="#">경영공시</a>
+                    <a href="#">고객정보처리방침</a>
+                    <a href="#">보호금융상품등록부</a>
+                    <a href="#">상품공시실</a>
+                    <a href="#">전자민원접수</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
