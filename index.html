@@ -1,262 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BNK 부산은행</title>
-    <style>
-
-    .siteNav {
-        width: 100%;
-        border-bottom: 2px solid #ff0000;
-        background-color: #fff;
-    }
-
-    .mainNav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 15px 20px;
-        box-sizing: border-box;
-    }
-
-    .right-group {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .logo-busan {
-        display: block;
-        width: 132px;
-        height: 21px;
-        background: url('https://www.busanbank.co.kr/resource/img/tit/h1_busanbank_new.png') no-repeat center;
-        background-size: contain;
-        margin: 0;
-    }
-
-    .logo-busan a {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-
-    .main-menu {
-        display: flex;
-        list-style: none;
-        gap: 30px;
-        margin: 0;
-        padding: 0;
-    }
-
-    .main-menu li a {
-        padding: 6px 0 3px;
-        font-size: 17px;
-        font-weight: bold;
-        color: #212121;
-        text-decoration: none;
-        line-height: 1.4;
-    }
-
-    .btn-search {
-        width: 110px;
-        height: 32px;
-        padding-left: 25px;
-        border: 1px solid #e0e0e1;
-        border-radius: 4px;
-        background: url('https://www.busanbank.co.kr/resource/img/ico/cmn/ico_gnb_search.png') no-repeat 10px center;
-        background-color: #fff;
-        cursor: pointer;
-        outline: none;
-    }
-
-    .btn-allmemu {
-        width: 110px;
-        height: 32px;
-        padding-left: 25px;
-        border: 1px solid #e0e0e1;
-        border-radius: 4px;
-        background: url('https://www.busanbank.co.kr/resource/img/ico/cmn/ico_gnb_allmenu.png') no-repeat 10px center;
-        background-color: #fff;
-        cursor: pointer;
-        outline: none;
-    }
-
-    .containerWrap {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-
-    .area {
-        display: flex;
-        gap: 20px;
-        align-items: stretch;
-    }
-
-    .kv-area {
-        flex: 7;
-        display: flex;
-    }
-
-    .kv-area img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        border-radius: 8px;
-        /*object-fit: cover;*/
-    }
-
-    .sub-menu-box {
-        flex: 5;
-        background-color: #f8f9fa;
-        border: 1px solid #e0e0e1;
-        border-radius: 8px;
-        padding: 20px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-
-    .sub-menu-box h3 {
-        margin-top: 0;
-        font-size: 18px;
-        color: #212121;
-    }
-
-    .quick-menu-list {
-        list-style: none;
-        padding: 0;
-        margin: 20px 0 0 0;
-    }
-
-    .quick-menu-list li {
-        margin-bottom: 12px;
-    }
-
-    .quick-menu-list li:last-child {
-        margin-bottom: 0;
-    }
-
-    .quick-menu-list li a {
-        display: block;
-        padding: 10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-    }
-
-    .quick-menu-list li a:hover {
-        background-color: #ff0000;
-        color: #fff;
-        border-color: #ff0000;
-    }
-
-    footer {
-        width: 100%;
-        background-color: #fffdfd;
-        color: #bbb;
-        padding: 40px 0;
-        font-size: 13px;
-        border-top: 3px solid #ff0000;
-        margin-top: 40px;
-        box-sizing: border-box;
-    }
-
-    .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-
-    .footer-links {
-        display: flex;
-        margin: 0;
-        gap: 30px;
-        font-weight: bold;
-    }
-
-    .footer-links a {
-        color: #ccc;
-        text-decoration: none;
-    }
-
-    .footer-links a:hover {
-        color: #fff;
-        text-decoration: underline;
-    }
-</style>
+    <title>메루카리 </title>
+    <link rel="stylesheet" href="css/style3.css">
+    <script src="js/banner.js"></script>
 </head>
 
+
 <body>
-    <div id="wrap">
-
-        <div class="siteNav">
-            <div class="mainNav">
-                <h1 class="logo-busan">
-                    <a href="https://www.busanbank.co.kr" title="부산은행 홈으로 가기"></a>
-                </h1>
-                <div class="right-group">
-                    <ul class="main-menu">
-                        <li><a href="#">개인뱅킹</a></li>
-                        <li><a href="#">기업뱅킹</a></li>
-                        <li><a href="#">금융상품</a></li>
+    <div class="top-utill">
+        <div class="container util-flex">
+            <div class="notice">
+                <span class="notice-title">🚨 [공지/알림]</span>
+                <div class="notice-box">
+                    <ul class="ticket-list">
+                        <li><a href="#">메루카리 포인트 환원 캠페인 진행 중 (~10/31)</a></li>
+                        <li><a href="#">무단 도용 및 방지 (~10/31)</a></li>
                     </ul>
-                    <div class="search-area">
-                        <button type="button" class="btn-search" title="검색하기">검색하기</button>
-                    </div>
-                    <div class="all-memu">
-                        <button type="button" class="btn-allmemu" title="전체메뉴">전체</button>
-                    </div>
                 </div>
+            </div>
+            <div class="util-memu">
+                <a href="#">로그인</a> | <a href="#">회원가입</a> | <a href="#">통장입금</a> | <a href="#">고객센터</a>
+            </div>
+        </div>
+    </div>
+
+
+    <header class="logobar">
+        <div class="container header-inner">
+            <div class="header-logo">
+                <a href="#">
+                    <img src="https://merukai.com/skin/default/images/headfoot/logo1.png" alt="merukai">
+                </a>
+            </div>
+            <div class="search-area">
+                <form action="#" method="get">
+                    <input type="text" name="search" placeholder="무엇을 찾고 계신가요?">
+                    <button type="submit" class="search_btn" aria-label="검색">
+                        🔍
+                    </button>
+                </form>
+            </div>
+            <div class="header-icons">
+                <a href="#" class="icon-link" aria-label="알림">🔔</a>
+                <a href="#" class="mypage-link">마이페이지</a>
             </div>
         </div>
 
 
-        <div class="body-container">
-            <div class="containerWrap">
-                <div class="area">
-                    <div class="kv-area">
-                        <img src="https://www.busanbank.co.kr/upload/bhp/vupload/banner/banner/[%EB%B9%84%EB%8C%80%EB%A9%B4%EB%B2%95%EC%9D%B8%EA%B3%84%EC%A2%8C%EA%B0%9C%EC%84%A4]%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80.png"
-                            alt="배너 이미지">
-                    </div>
-                    <div class="sub-menu-box">
-                        <h3>빠른 메뉴</h3>
-                        <ul class="quick-menu-list">
-                            <li><a href="#">인증서 관리</a></li>
-                            <li><a href="#">계좌조회</a></li>
-                            <li><a href="#">이체하기</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <nav class="category-nav">
+            <div class="container nav-list">
+                <a href="#" class="nav-item active">추천</a>
+                <a href="#" class="nav-item">패션</a>
+                <a href="#" class="nav-item">전자기기</a>
+                <a href="#" class="nav-item">트레이딩카드</a>
+                <a href="#" class="nav-item">게임</a>
+                <a href="#" class="nav-item">브랜드</a>
             </div>
-        </div>
+        </nav>
+    </header>
 
-        <!-- 하단 푸터 -->
-        <footer>
-            <div class="footer-container">
-                <div class="footer-links">
-                    <a href="#">개인정보처리방침</a>
-                    <a href="#">경영공시</a>
-                    <a href="#">고객정보처리방침</a>
-                    <a href="#">보호금융상품등록부</a>
-                    <a href="#">상품공시실</a>
-                    <a href="#">전자민원접수</a>
+
+    <main class="main-container container">
+        <section class="promo-banner-section" aria-label="프로모션 배너">
+            <div class="promo-banner">
+            <div class="banner-scorll">
+                <div class="banner-content">
+                    <h2>메루카리 퍼스트 프로모션</h2>
+                    <p>- 메루카리 카드(Mercari Card) 첫 발급 시 3,000P 증정!</p>
+                    <p class="sub-text">(자동 슬라이드 및 좌우 가로 스크롤 swipe 가능)</p>
+                </div>
+                <div class="banner-content">
+                    <h2>메루카리 세컨드 프로모션</h2>
+                    <p>- 스이카 카드로 첫 결재 시 포인트 5% 적립</p>
+                    <p class="sub-text">(자동 슬라이드 및 좌우 가로 스크롤 swipe 가능)</p>
+                </div>
+                <div class="banner-content">
+                    <h2>메루카리 써드 프로모션</h2>
+                    <p>- 삼井 스미토모 카드 첫 결재 시 20% 할인</p>
+                    <p class="sub-text">(자동 슬라이드 및 좌우 가로 스크롤 swipe 가능)</p>
                 </div>
             </div>
-        </footer>
+                <div class="banner-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="quick-icons-section" aria-label="빠른 실행 메뉴">
+            <ul class="quick-icons-grid">
+                <li><a href="#">
+                        <div class="icon-box">📷</div><span>출품하기</span>
+                    </a></li>
+                <li><a href="#">
+                        <div class="icon-box">💳</div><span>메루페이</span>
+                    </a></li>
+                <li><a href="#">
+                        <div class="icon-box">🏪</div><span>메루카리 샵</span>
+                    </a></li>
+                <li><a href="#">
+                        <div class="icon-box">₿</div><span>비트코인</span>
+                    </a></li>
+                <li><a href="#">
+                        <div class="icon-box">🎟️</div><span>쿠폰받기</span>
+                    </a></li>
+            </ul>
+        </section>
+
+
+        <section class="mid-banner-section" aria-label="이벤트 안내">
+            <div class="mid-banner">
+                <span class="banner-text">🎁 친구 초대 코드 입력 시 500pt 100% 지급!</span>
+                <a href="#" class="banner-btn">자세히 &gt;</a>
+            </div>
+        </section>
+
+
+        <section class="product-feed-section">
+            <h2 class="section-title">당신을 위한 추천 상품 (おすすめ)</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-img"><img src="image/images1.jpg" alt="잠만보 인형"></div>
+                    <div class="product-info">
+                        <p>잠만보 인형</p>
+                        <p class="price">₩ 1,500</p>
+                        <span class="shipping-tag included">送料込み</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img"><img src="image/images2.jpg" alt="도널드덕 시계"></div>
+                    <div class="product-info">
+                        <p>도널드 덕 시계</p>
+                        <p class="price">₩ 12,800</p>
+                        <span class="shipping-tag included">送料込み</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img"><img src="image/images3.jpg" alt="잠만보 인형"></div>
+                    <div class="product-info">
+                        <p>팬</p>
+                        <p class="price">₩ 3,200</p>
+                        <span class="shipping-tag cod">着払い</span>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img"><img src="image/images4.jpg" alt="머그컵 세트"></div>
+                    <div class="product-info">
+                        <p>머그컵 세트</p>
+                        <p class="price">₩ 5,400</p>
+                        <span class="shipping-tag included">送料込み</span>
+                    </div>
+                </div>
+        </section>
+    </main>
+
+    <footer class="footer-area">
+        <div class="container">
+            <p>고객센터: 1588-0000 | FAQ / 1:1 문의</p>
+            <p><a href="#">회사소개</a> | <a href="#">이용약관</a> | <a href="#">개인정보처리방침</a></p>
+            <p class="version">Ver 1.2.0</p>
+        </div>
+    </footer>
+
+    <div class="floating-btn-wrap">
+        <button class="floating-sell-btn">
+            📷 출품하기
+        </button>
     </div>
 </body>
 
