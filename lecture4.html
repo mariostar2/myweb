@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마지막 신호 전송 - 3D Card</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #0369a1 100%);
+            --glass-bg: rgba(6, 18, 36, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-sub: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #020617;
+            background-image:
+                linear-gradient(rgba(5, 15, 30, 0.4), rgba(5, 10, 20, 0.6)),
+                url('image/image123.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1400px;
+        }
+
+        .scene-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 460px;
+            transform-style: preserve-3d;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 35px;
+            border-radius: 32px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 50px 120px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(56, 189, 248, 0.1);
+            color: var(--text-main);
+            text-align: center;
+            transform: translateZ(80px);
+        }
+
+        .glass-card h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .divider {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            margin: 24px 0;
+        }
+
+        .section {
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+            transform: translateZ(40px);
+        }
+
+        .section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+        }
+
+        .hidden-radio {
+            display: none !important;
+        }
+
+        /* radio group 레이아웃 정렬 */
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* 기본 상태 label 스타일 */
+        .radio-group label {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #cbd5e1;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 1. 마우스 호버(:hover) 시 각 라벨별 고유 색상 강조 */
+        .radio-group label[for="trust"]:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .radio-group label[for="reliance"]:hover {
+            background: rgba(52, 211, 153, 0.25);
+            border-color: #34d399;
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(52, 211, 153, 0.3);
+        }
+
+        .radio-group label[for="unknown"]:hover {
+            background: rgba(244, 114, 182, 0.25);
+            border-color: #f472b6;
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(244, 114, 182, 0.3);
+        }
+
+        /* 2. 클릭 선택(:checked) 시 완전한 그라데이션 및 강조 효과 */
+        #trust:checked~.section .radio-group label[for="trust"],
+        #reliance:checked~.section .radio-group label[for="reliance"],
+        #unknown:checked~.section .radio-group label[for="unknown"] {
+            border-color: transparent;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* 믿음 (파란색) 선택 상태 */
+        #trust:checked~.section .radio-group label[for="trust"] {
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.45);
+        }
+
+        /* 신뢰 (초록색) 선택 상태 */
+        #reliance:checked~.section .radio-group label[for="reliance"] {
+            background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+            box-shadow: 0 10px 25px rgba(52, 211, 153, 0.45);
+        }
+
+        /* 사랑 (분홍색) 선택 상태 */
+        #unknown:checked~.section .radio-group label[for="unknown"] {
+            background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+            box-shadow: 0 10px 25px rgba(244, 114, 182, 0.45);
+        }
+
+        #imageSection {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #trust:checked~#imageSection,
+        #reliance:checked~#imageSection,
+        #unknown:checked~#imageSection {
+            display: block;
+            opacity: 1;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .thumb-option {
+            cursor: pointer;
+        }
+
+        .thumb-option input {
+            display: none;
+        }
+
+        .thumb-option img {
+            width: 95px;
+            height: 95px;
+            border-radius: 24px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            filter: brightness(80%);
+        }
+
+        .thumb-option img:hover {
+            filter: brightness(100%);
+        }
+
+        .thumb-option input:checked+img {
+            border-color: #38bdf8;
+            filter: brightness(100%);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.3);
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+            transform: translateZ(50px);
+        }
+
+        textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 18px;
+            resize: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        textarea:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.6);
+            border-color: #38bdf8;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 16px;
+            padding: 16px 20px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(56, 189, 248, 0.35);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateZ(60px);
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 18px 40px rgba(56, 189, 248, 0.5);
+            filter: brightness(110%);
+        }
+
+        .submit-btn:active {
+            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scene-container">
+        <!-- action="result.html", GET 방식으로 결과 페이지로 전달 -->
+        <form class="glass-card" action="result.html" method="GET">
+            <h2>마지막 신호 남기기</h2>
+            <div class="divider"></div>
+
+            <!-- 라디오 버튼 요소들을 형제 선택자로 사용하기 위해 최상단에 배치 -->
+            <input type="radio" name="font" id="trust" value="trust" class="hidden-radio" required>
+            <input type="radio" name="font" id="reliance" value="reliance" class="hidden-radio">
+            <input type="radio" name="font" id="unknown" value="unknown" class="hidden-radio">
+
+            <div class="section">
+                <div class="section-title">1. 남겨질 신호의 감정을 선택해주세요</div>
+                <div class="radio-group">
+                    <label for="trust">믿음</label>
+                    <label for="reliance">신뢰</label>
+                    <label for="unknown">사랑</label>
+                </div>
+            </div>
+
+            <div class="section" id="imageSection">
+                <div class="section-title">2. 마지막 여정을 함께할 동반자를 선택해주세요</div>
+                <div class="thumbnail-container">
+                    <label class="thumb-option">
+                        <input type="radio" name="catChoice" value="cat1" required>
+                        <img src="image/cat.png" alt="동반자1">
+                    </label>
+                    <label class="thumb-option">
+                        <input type="radio" name="catChoice" value="cat2">
+                        <img src="image/cat2.png" alt="동반자2">
+                    </label>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">3. 전달하고 싶은 마지막 마음을 적어주세요</div>
+                <div class="input-wrapper">
+                    <textarea name="message" rows="4" maxlength="150" placeholder="세상이 끝나도 전하고 싶은 말을 적어주세요..."
+                        required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    신호 전송하기
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 페이지가 열리거나 뒤로가기로 돌아올 때 폼을 초기화합니다.
+        window.addEventListener('pageshow', () => {
+            const form = document.querySelector('form');
+            if (form) {
+                form.reset();
+            }
+        });
+    </script>
+</body>
+
+</html>
