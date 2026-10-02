@@ -3,334 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마지막 신호 - 인트로</title>
+    <title>대시보드</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            width: 100vw;
-            height: 100vh;
-            background-color: #03040a;
-            color: #ffffff;
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #030008;
+            overflow-x: hidden;
+            color: #f1f5f9;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
         }
 
-        /* 1. 전체 화면 배경 이미지 */
-        .full-bg-image {
-            position: absolute;
+
+        .aurora-background {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: cover;
-            object-position: center;
-            z-index: 0;
-            filter: brightness(0.7) contrast(1.1);
+            z-index: -2;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(20, 184, 166, 0.45) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.45) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 90% 85%, rgba(168, 85, 247, 0.35) 0%, transparent 40%),
+                #030008;
+            filter: blur(45px);
+            animation: auroraShift 12s ease-in-out infinite alternate;
         }
 
-        /* 어두운 분위기 오버레이 (붉은 톤과 어두운 아포칼립스 감성 부여) */
-        .bg-overlay {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.4) 0%, rgba(3, 4, 10, 0.85) 100%);
-            z-index: 1;
-            pointer-events: none;
+        @keyframes auroraShift {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.85; filter: hue-rotate(0deg) blur(45px); }
+            50% { transform: scale(1.08) translate(-2%, 2%); opacity: 1; filter: hue-rotate(25deg) blur(50px); }
+            100% { transform: scale(1.02) translate(2%, -2%); opacity: 0.9; filter: hue-rotate(-15deg) blur(45px); }
         }
 
-        /* 자바스크립트 별빛 Canvas 레이어 */
-        #starCanvas {
-            position: absolute;
+        #particle-canvas {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 2;
+            z-index: -1;
             pointer-events: none;
         }
 
-        /* 고정 인트로 카드 컨테이너 */
-        .intro-card {
+        .neon-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
-            text-align: center;
-            background: rgba(15, 12, 28, 0.65);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            padding: 50px 50px;
-            border-radius: 32px;
-            border: 1px solid rgba(244, 114, 182, 0.25);
-            box-shadow:
-                0 30px 60px rgba(0, 0, 0, 0.85),
-                0 0 50px rgba(244, 63, 94, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            z-index: 10;
-            max-width: 500px;
-            width: 90%;
-        }
-
-        /* 제목 */
-        .intro-title {
-            font-size: 25px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 14px;
-            background: linear-gradient(135deg, #ffffff 0%, #fecdd3 50%, #fb7185 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 25px rgba(244, 63, 94, 0.3);
-        }
-
-        /* 부제목 (타이핑 효과 커서) */
-        .intro-subtext {
-            font-size: 14px;
-            color: #cbd5e1;
-            line-height: 1.7;
-            margin-bottom: 36px;
-            min-height: 48px; /* 2줄 고려 높이 지정 */
-            word-break: keep-all;
-        }
-
-        .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 14px;
-            background-color: #fb7185;
-            margin-left: 2px;
-            animation: blink 0.8s infinite;
-            vertical-align: middle;
-        }
-
-        /* 링크 스타일 */
-        .btn-link {
-            text-decoration: none;
-            display: inline-block;
-            width: 100%;
-        }
-
-        /* 마지막 신호 전달 버튼 */
-        .shooting-star-btn {
-            position: relative;
-            width: 100%;
-            padding: 16px 28px;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            background: rgba(15, 23, 42, 0.8);
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-            transition: all 0.3s ease;
         }
 
-        /* 버튼 회전 애니메이션 빛줄기 */
-        .shooting-star-btn::before {
+
+        .card-bank {
+            border: 2px solid rgba(20, 184, 166, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(20, 184, 166, 0.15), 0 0 25px rgba(20, 184, 166, 0.3);
+        }
+        .card-bank::before {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(
-                transparent,
-                transparent,
-                transparent,
-                #f43f5e,
-                #ffffff
-            );
-            animation: rotateStar 3s linear infinite;
-            z-index: 1;
+            inset: -2px;
+            border-radius: 2.1rem;
+            background: linear-gradient(135deg, #14b8a6, #3b82f6, #06b6d4);
+            z-index: -1;
+            opacity: 0.4;
+            transition: opacity 0.4s ease;
         }
+        .card-bank:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 60px -10px rgba(20, 184, 166, 0.8), 0 0 50px rgba(59, 130, 246, 0.7), inset 0 0 35px rgba(20, 184, 166, 0.5);
+        }
+        .card-bank:hover::before { opacity: 1; }
 
-        /* 버튼 내부 마스크 Layer */
-        .shooting-star-btn::after {
+
+        .card-fairytale {
+            border: 2px solid rgba(236, 72, 153, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(236, 72, 153, 0.15), 0 0 25px rgba(236, 72, 153, 0.3);
+        }
+        .card-fairytale::before {
             content: '';
             position: absolute;
-            inset: 2px;
-            background: linear-gradient(135deg, #181825 0%, #2a1220 100%);
-            border-radius: 48px;
-            z-index: 2;
-            transition: background 0.3s ease;
+            inset: -2px;
+            border-radius: 2.1rem;
+            background: linear-gradient(135deg, #ec4899, #a855f7, #f43f5e);
+            z-index: -1;
+            opacity: 0.4;
+            transition: opacity 0.4s ease;
         }
-
-        /* 버튼 텍스트 컨텐츠 */
-        .btn-content {
-            position: relative;
-            z-index: 3;
-            letter-spacing: 0.5px;
-            background: linear-gradient(90deg, #ffffff, #fecdd3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .card-fairytale:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 60px -10px rgba(236, 72, 153, 0.8), 0 0 50px rgba(168, 85, 247, 0.7), inset 0 0 35px rgba(236, 72, 153, 0.5);
         }
+        .card-fairytale:hover::before { opacity: 1; }
 
-        /* 버튼 호버 효과 */
-        .shooting-star-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 35px rgba(244, 63, 94, 0.4);
+        .card-tech {
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(59, 130, 246, 0.15), 0 0 25px rgba(6, 182, 212, 0.3);
         }
-
-        .shooting-star-btn:hover::after {
-            background: linear-gradient(135deg, #2a1220 0%, #881337 100%);
+        .card-tech::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 2.1rem;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4, #6366f1);
+            z-index: -1;
+            opacity: 0.4;
+            transition: opacity 0.4s ease;
         }
-
-        @keyframes rotateStar {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .card-tech:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 60px -10px rgba(59, 130, 246, 0.8), 0 0 50px rgba(6, 182, 212, 0.7), inset 0 0 35px rgba(59, 130, 246, 0.5);
         }
+        .card-tech:hover::before { opacity: 1; }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+
+        @keyframes floatEffect {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: floatEffect 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: floatEffect 7s ease-in-out 2s infinite;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between p-6 sm:p-12 relative selection:bg-purple-500 selection:text-white">
 
-    <!-- 1. 전체 화면 배경 이미지 -->
-    <img src="image/image01.jpeg" alt="마지막 순간의 밤하늘" class="full-bg-image">
-    <div class="bg-overlay"></div>
 
-    <!-- 2. 자바스크립트 별빛 & 파티클 Canvas -->
-    <canvas id="starCanvas"></canvas>
+    <div class="aurora-background"></div>
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- 3. 카드 컨테이너 -->
-    <div class="intro-card">
-        <h1 class="intro-title">모든 것이 사라지기 전, 너에게</h1>
-        <p class="intro-subtext"><span id="typedText"></span><span class="typing-cursor"></span></p>
 
-        <a href="lecture4.html" class="btn-link" id="startBtnLink">
-            <button class="shooting-star-btn" id="startBtn">
-                <span class="btn-content">마지막 신호 열어보기 ♥</span>
-            </button>
+    <header class="max-w-4xl mx-auto w-full text-center py-8 z-10 animate-float">
+        <div class="inline-block p-[2px] rounded-full bg-gradient-to-r from-teal-400 via-purple-500 to-cyan-400 mb-4 shadow-[0_0_25px_rgba(20,184,166,0.7)]">
+            <div class="px-6 py-2 bg-slate-950/90 backdrop-blur-xl rounded-full border border-teal-500/40">
+                <span class="text-xs font-orbitron font-bold tracking-widest text-teal-300 uppercase flex items-center gap-2 justify-center">
+                    ✨ PROJECT HUB &bull; NEON AURORA ✨
+                </span>
+            </div>
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-4 drop-shadow-[0_0_35px_rgba(20,184,166,0.9)] font-orbitron">
+            내 프로젝트 인덱스
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+            각 영역의 세션별 파일들이 있습니다(연습용)
+        </p>
+    </header>
+
+    <main class="max-w-5xl mx-auto w-full grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 my-auto z-10 py-6 items-center">
+
+
+        <a href="../tm0929/index.html" class="neon-card card-bank group p-8 flex flex-col justify-between h-[380px] text-center sm:text-left relative">
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-teal-500/35 rounded-full blur-3xl group-hover:bg-teal-500/60 transition-all"></div>
+            <div>
+                <div class="w-16 h-16 mx-auto sm:mx-0 rounded-2xl bg-gradient-to-br from-teal-400 via-emerald-600 to-cyan-700 flex items-center justify-center text-white shadow-[0_0_25px_rgba(20,184,166,0.8)] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300 border border-teal-200/40 mb-6">
+                    <svg class="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="text-xs font-orbitron font-semibold text-teal-400 uppercase tracking-widest mb-1">Financial Web</div>
+                <h2 class="text-xl font-bold text-white group-hover:text-teal-300 transition-colors mb-2 font-orbitron tracking-wide">01. 은행 웹</h2>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">은행 웹 입니다</p>
+            </div>
+            <div class="mt-6 flex items-center justify-between pt-4 border-t border-teal-500/30 text-xs font-semibold text-teal-300 font-orbitron">
+                <span class="tracking-wider uppercase">Open Bank Portal</span>
+                <span class="group-hover:translate-x-2 transition-transform text-lg">&rarr;</span>
+            </div>
         </a>
-    </div>
 
-    <!-- 자바스크립트 연출 코드 -->
+        <a href="../1002/index.html" class="neon-card card-fairytale group p-8 flex flex-col justify-between h-[400px] text-center sm:text-left relative sm:-translate-y-4 animate-float-delayed">
+            <div class="absolute -right-8 -top-8 w-36 h-36 bg-pink-500/35 rounded-full blur-3xl group-hover:bg-pink-500/60 transition-all"></div>
+            <div>
+                <div class="w-16 h-16 mx-auto sm:mx-0 rounded-2xl bg-gradient-to-br from-pink-500 via-rose-600 to-purple-600 flex items-center justify-center text-white shadow-[0_0_25px_rgba(236,72,153,0.8)] group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300 border border-pink-200/40 mb-6">
+                    <svg class="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div class="text-xs font-orbitron font-semibold text-pink-400 uppercase tracking-widest mb-1">Book Stories</div>
+                <h2 class="text-xl font-bold text-white group-hover:text-pink-300 transition-colors mb-2 font-orbitron tracking-wide">02. 동화</h2>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">동화 공간입니다.</p>
+            </div>
+            <div class="mt-6 flex items-center justify-between pt-4 border-t border-pink-500/30 text-xs font-semibold text-pink-300 font-orbitron">
+                <span class="tracking-wider uppercase">Open Fairytale</span>
+                <span class="group-hover:translate-x-2 transition-transform text-lg">&rarr;</span>
+            </div>
+        </a>
+        <a href="../1002/index-01.html" class="neon-card card-tech group p-8 flex flex-col justify-between h-[380px] text-center sm:text-left relative">
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-blue-500/35 rounded-full blur-3xl group-hover:bg-blue-500/60 transition-all"></div>
+            <div>
+                <div class="w-16 h-16 mx-auto sm:mx-0 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-[0_0_25px_rgba(59,130,246,0.8)] group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300 border border-blue-200/40 mb-6">
+                    <svg class="w-8 h-8 drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <div class="text-xs font-orbitron font-semibold text-cyan-400 uppercase tracking-widest mb-1">Tech & Code</div>
+                <h2 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-2 font-orbitron tracking-wide">03. SQL 책</h2>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">데이터베이스의 지식을 얻기 위한 공간입니다.</p>
+            </div>
+            <div class="mt-6 flex items-center justify-between pt-4 border-t border-blue-500/30 text-xs font-semibold text-cyan-300 font-orbitron">
+                <span class="tracking-wider uppercase">Open Tech Book</span>
+                <span class="group-hover:translate-x-2 transition-transform text-lg">&rarr;</span>
+            </div>
+        </a>
+
+    </main>
+
+
+    <footer class="max-w-4xl mx-auto w-full text-center py-6 text-xs text-slate-400 border-t border-purple-500/20 z-10 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <span class="font-orbitron tracking-wider">&copy; 2026 Neon Aurora Hub. All rights reserved.</span>
+        <span class="flex items-center gap-2 text-teal-300 font-orbitron">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-400 animate-ping shadow-[0_0_10px_#14b8a6]"></span>
+            Aurora Matrix Online
+        </span>
+    </footer>
+
     <script>
-        // -------------------------------------------------------------
-        // 1. Canvas 렌더링 : 밤하늘 별빛과 흩날리는 마지막 자국
-        // -------------------------------------------------------------
-        const canvas = document.getElementById('starCanvas');
+        const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
 
-        const stars = [];
-        const STAR_COUNT = 100;
+        window.addEventListener('resize', resize);
+        resize();
 
-        for (let i = 0; i < STAR_COUNT; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2,
+        const numParticles = Math.floor((width * height) / 4000);
+        for (let i = 0; i < numParticles; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                radius: Math.random() * 2 + 0.3,
+                speedY: -(Math.random() * 0.5 + 0.1),
+                speedX: (Math.random() - 0.5) * 0.3,
                 alpha: Math.random(),
-                speed: Math.random() * 0.02 + 0.005,
-                growing: Math.random() > 0.5
+                fadeSpeed: Math.random() * 0.015 + 0.003
             });
         }
 
-        let clickParticles = [];
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.alpha -= p.fadeSpeed;
 
-            // 별빛 업데이트 & 그리기
-            stars.forEach(star => {
-                if (star.growing) {
-                    star.alpha += star.speed;
-                    if (star.alpha >= 1) star.growing = false;
-                } else {
-                    star.alpha -= star.speed;
-                    if (star.alpha <= 0.1) star.growing = true;
+                if (p.y < 0 || p.alpha <= 0) {
+                    p.y = height + 10;
+                    p.x = Math.random() * width;
+                    p.alpha = Math.random();
                 }
 
                 ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(254, 205, 211, ${star.alpha})`;
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                const colors = ['20, 184, 166', '236, 72, 153', '59, 130, 246', '168, 85, 247'];
+                const randomColor = colors[Math.floor(Math.abs(Math.sin(p.x)) * colors.length)];
+                ctx.fillStyle = `rgba(${randomColor}, ${p.alpha})`;
+                ctx.shadowBlur = 14;
+                ctx.shadowColor = `rgb(${randomColor})`;
                 ctx.fill();
             });
 
-            // 클릭 시 흩어지는 마음의 파티클
-            clickParticles.forEach((p, index) => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.alpha -= 0.025;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(244, 63, 94, ${p.alpha})`;
-                ctx.fill();
-
-                if (p.alpha <= 0) clickParticles.splice(index, 1);
-            });
-
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateParticles);
         }
-        animate();
 
-        // -------------------------------------------------------------
-        // 2. 부제목 애틋한 타이핑 애니메이션
-        // -------------------------------------------------------------
-        const textToType = "세상이 멈추기 전, 꼭 너에게 남기고 싶었던 말이 있어.";
-        const typedTextElem = document.getElementById('typedText');
-        let charIndex = 0;
-
-        function typeWriter() {
-            if (charIndex < textToType.length) {
-                typedTextElem.textContent += textToType.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 80);
-            }
-        }
-        setTimeout(typeWriter, 400);
-
-        // -------------------------------------------------------------
-        // 3. 버튼 클릭 시 마지막 파티클 연출 후 다음 페이지 이동
-        // -------------------------------------------------------------
-        const startBtnLink = document.getElementById('startBtnLink');
-
-        startBtnLink.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            const rect = e.target.getBoundingClientRect();
-            const startX = e.clientX || (rect.left + rect.width / 2);
-            const startY = e.clientY || (rect.top + rect.height / 2);
-
-            for (let i = 0; i < 40; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 6 + 2;
-                clickParticles.push({
-                    x: startX,
-                    y: startY,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    size: Math.random() * 3 + 1,
-                    alpha: 1
-                });
-            }
-
-            setTimeout(() => {
-                window.location.href = startBtnLink.href;
-            }, 350);
-        });
+        animateParticles();
     </script>
 
 </body>
