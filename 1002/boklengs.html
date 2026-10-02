@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내가 어려워 하는 SQL 구문들</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h2.main-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+
+        .split-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+        .sql-card {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+        }
+
+        .query-box pre {
+            font-size: 16px;
+        }
+
+        .container, .left-container {
+            flex: 1;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .query-box {
+            background-color: #3498db;
+            color: #edf2f7;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,td {
+            border: 1px solid #cbd5e0;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 class="main-title">내가 어려워 하는 SQL 구문들</h2>
+    <div class="split-container">
+        <div class="sql-card">
+
+
+            <div class="container">
+                <h3>JOIN이란 무엇인가요?</h3>
+                <p><strong>설명:</strong> 만약에 테이블의 컬럼이 많을경우 중복현상이 일어날수 있는데 이런 비효율적인 작업을 막기 위해 등장한것이 정규화이고 그 이후에 흩어진 데이터를
+                    하나로 모으는것이 조인이라는 기술입니다.</p>
+                <br>
+                <h4>LEFT OUTER JOIN</h4>
+                <div class="query-box">
+                    <pre>
+SELECT e.ename, e.deptno, d.dname
+FROM emp e
+LEFT OUTER JOIN dept d ON e.deptno = d.deptno;
+                    </pre>
+                </div>
+            </div>
+            <div class="left-container">
+                <h3>쿼리 실행문 및 결과</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ENAME</th>
+                            <th>DEPTNO</th>
+                            <th>DNAME</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>KING</td>
+                            <td>10</td>
+                            <td>ACCOUNTING</td>
+                        </tr>
+                        <tr>
+                            <td>CLARK</td>
+                            <td>10</td>
+                            <td>ACCOUNTING</td>
+                        </tr>
+                        <tr>
+                            <td>MILLER</td>
+                            <td>10</td>
+                            <td>ACCOUNTING</td>
+                        </tr>
+                        <tr>
+                            <td>JONES</td>
+                            <td>20</td>
+                            <td>RESEARCH</td>
+                        </tr>
+                        <tr>
+                            <td>SCOTT</td>
+                            <td>20</td>
+                            <td>RESEARCH</td>
+                        </tr>
+                        <tr>
+                            <td>FORD</td>
+                            <td>20</td>
+                            <td>RESEARCH</td>
+                        </tr>
+                        <tr>
+                            <td>SMITH</td>
+                            <td>20</td>
+                            <td>RESEARCH</td>
+                        </tr>
+                        <tr>
+                            <td>ADAMS</td>
+                            <td>20</td>
+                            <td>RESEARCH</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="sql-card">
+            <div class="container">
+                <h3>ORDER BY란 무엇인가요?</h3>
+                <p><strong>설명:</strong> 출력을 해야 하는 데이터가 많을 경우 정렬을 해서 보는데 크게 오름 차순과 내림 차순이 있습니다</p>
+                <br>
+                <h4>GROUP BY</h4>
+                <div class="query-box">
+                    <p>오름차순</p>
+                    <pre>SELECT ename, sal, hiredate
+FROM emp
+ORDER BY ename ASC;
+                    </pre>
+                </div>
+            </div>
+
+            <div class="left-container">
+                <h3>쿼리 실행문 및 결과</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ENAME</th>
+                            <th>SAL</th>
+                            <th>HIREDATE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ADAMS</td>
+                            <td>1100</td>
+                            <td>87/07/13</td>
+                        </tr>
+                        <tr>
+                            <td>ALLEN</td>
+                            <td>1600</td>
+                            <td>81/02/20</td>
+                        </tr>
+                        <tr>
+                            <td>BLAKE</td>
+                            <td>2850</td>
+                            <td>81/05/01</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="sql-card">
+            <div class="container">
+                <h3>GROUP BY란 무엇인가요?</h3>
+                <p><strong>설명:</strong>테이블 전체가 아닌 특정 값을 기준으로 묶어서 분석할때 사용하는 문법입니다.(구문이 짧아서 쉬워보이는거지 길어지면 매우 어렵습니다)</p>
+                <br>
+                <h4>GROUP BY</h4>
+                <div class="query-box">
+                    <pre>SELECT deptno, COUNT(*)
+FROM EMP
+GROUP BY  deptno;
+                    </pre>
+                </div>
+            </div>
+
+            <div class="left-container">
+                <h3>쿼리 실행문 및 결과</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DEPTNO</th>
+                            <th>COUNT(*)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>20</th>
+                            <th>5</th>
+                        </tr>
+                        <tr>
+                            <th>30</th>
+                            <th>6</th>
+                        </tr>
+                        <tr>
+                            <th>10</th>
+                            <th>3</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</body>
+
+</html>

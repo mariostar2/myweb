@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-family: 'Segoe UI' ,Tahoma,Geneva,Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        h2.main-title{
+            text-align: center;
+            color: #111;
+            margin-bottom: 40px;
+        }
+        .split-bigbox{
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sql-box{
+            display: flex;
+            gap:20px
+        }
+        .container, .right-container{
+            flex: 1;
+            background-color: aliceblue;
+            padding : 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0);
+
+        }
+        h3{
+            margin-top:0;
+            color: #333;
+            border-bottom: 2px solid #39911a;
+            padding-bottom: 10px;
+        }
+        .query-box{
+            background-color: rgb(60, 60, 170);
+        }
+
+    </style>
+</head>
+<body>
+    <h2 class="main-title">개조파일 11</h2>
+    <div class="split-bigbox">
+        <div class="sql-box">
+            <div class="container">
+                <h3>Join이 뭘까?</h3>
+                <p><strong>설명:</strong>만약에 데이터가 있다면?</p>
+                <br>
+                <h4>JOIN</h4>
+                <div class="query-box">
+                    <pre>SELECT e.name ....</pre>
+                </div>
+            </div>
+
+            <div class="right-container">
+                <h3>쿼리의 결과</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>결과 및 예시</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>123</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

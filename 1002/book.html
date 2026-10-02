@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미운 오리 새끼 - 동적 3D 양면 책</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #2b2623;
+            --card-bg: #f7f3ec;
+            --card-subtle-bg: #ede5da;
+            --text-main: #2c2520;
+            --text-muted: #7a6e65;
+            --accent-color: #8c6d53;
+            --accent-gold: #c5a059;
+            --border-color: #d8cfc4;
+            --header-bg: rgba(35, 30, 27, 0.92);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Gowun Batang', 'Batang', serif;
+            line-height: 1.85;
+            word-break: keep-all;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(216, 207, 196, 0.15);
+            padding: 16px 20px;
+            text-align: center;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f7f3ec;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .book-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .book-container {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            height: 640px;
+            perspective: 2000px;
+            display: flex;
+        }
+
+        /* 중앙 제본선 음영 */
+        .book-spine-shadow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 100%;
+            background: linear-gradient(to right,
+                rgba(0,0,0,0.18) 0%,
+                rgba(0,0,0,0.32) 50%,
+                rgba(0,0,0,0.18) 100%);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        /* 종이 시트 단위 (회전축: 왼쪽) */
+        .sheet {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-style: preserve-3d;
+        }
+
+        .sheet.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* 면 공통 스타일 */
+        .page-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 38px 34px;
+            backface-visibility: hidden;
+            overflow-y: auto;
+            user-select: none;
+        }
+
+        /* 앞면 (오른쪽 배치) */
+        .page-face.front {
+            border-radius: 0 12px 12px 0;
+            box-shadow: inset 12px 0 15px -10px rgba(0, 0, 0, 0.12), 5px 8px 20px rgba(0,0,0,0.25);
+        }
+
+        /* 뒷면 (회전 후 왼쪽 배치) */
+        .page-face.back {
+            transform: rotateY(180deg);
+            border-radius: 12px 0 0 12px;
+            box-shadow: inset -12px 0 15px -10px rgba(0, 0, 0, 0.12), -5px 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .page-number-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            background-color: var(--card-subtle-bg);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .page-face p {
+            font-size: 1.02rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            text-align: justify;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(43, 38, 35, 0.85);
+            border: 1px solid rgba(216, 207, 196, 0.3);
+            color: #f7f3ec;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background-color: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-gold);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        .bottom-bar {
+            background-color: var(--header-bg);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(216, 207, 196, 0.15);
+            padding: 12px 20px;
+            z-index: 100;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 960px;
+            margin: 0 auto 8px auto;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .current-page { font-weight: 600; color: #f7f3ec; }
+        .percent-text { font-weight: 700; color: var(--accent-gold); }
+
+        .progress-track {
+            max-width: 960px;
+            margin: 0 auto;
+            height: 6px;
+            background-color: rgba(216, 207, 196, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>미운 오리 새끼</h1>
+        <p>안데르센 동화집</p>
+    </header>
+
+    <div class="book-wrapper">
+        <button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
+
+        <main class="book-container" id="bookContainer">
+            <div class="book-spine-shadow"></div>
+
+            <!-- SHEET 1 : [Front] Page 1 | [Back] Page 2 -->
+            <div class="sheet">
+                <article class="page-face front">
+                    <span class="page-number-tag">Page 1</span>
+                    <p>시골에서는 밖이 무척 아름답다. 여름이었다. 밀밭은 황금빛으로, 귀리는 초록빛으로 물들고 아래 푸른 초원에는 건초더미가 쌓였다. 붉은 다리 황새가 종종 돌아다니며 어미 황새한테 배운 이집트 말로 꽥꽥거렸다. 들판과 초원 주위로 너른 숲이 우거지고 한가운데에는 깊은 호수가 여러 개 있었다. 그렇다, 정말이지 시골의 야외 풍경은 아름답다.</p>
+                    <p>따사로운 햇살 속에, 오래된 영주의 저택이 호수에 둘러싸여 있다. 영주의 오른쪽 성벽에서 호수 쪽으로 커다란 우엉 잎이 자라는데 어떤 것들은 꽤나 높아서 어린아이들은 커다란 가지 맨 위에 올라가 설 수도 있었다. 숲 자체만큼이나 빽빽한 이 어지러운 나뭇잎 속에 오리 한 마리가 둥지를 틀고 앉아 새끼 오리를 낳고 있다. 어미는 아무래도 점점 지쳐가고 있다. 앉아 있는 게 엄청나게 지루한 일이고 혹시라도 들키면 안 되기 때문이다. 오리들은 이 우엉 잎 아래를 뒤뚱거리며 수다를 떠는 것보다 호수에서 헤엄치는 게 더 좋았다.</p>
+                </article>
+                <article class="page-face back">
+                    <span class="page-number-tag">Page 2</span>
+                    <p>마침내 알이 하나씩 하나씩 갈라지기 시작했다.</p>
+                    <p>“빽, 빽!” 어린 것들이 깨어나 울어대며 고개를 내밀었다.</p>
+                    <p>“꽥, 꽥!” 어미 오리가 서둘러 말했다. 새끼들은 모두 종종거리며 나와서 우엉 잎 아래 초록 세상을 보았다. 엄마는 실컷 보게 해주었다. 초록색은 눈에 좋기 때문이다.</p>
+                    <p>“세상 참 넓다.” 아기 오리들이 모두 말했다. 알 속보다 지금 확실히 더 넓은 곳에 있었다.</p>
+                    <p>엄마가 아기들에게 물었다. “여기가 세상의 전부라고 생각하니? 저런, 세상은 계속해서 뻗어 나간단다. 마당 저쪽으로, 그리고 목사의 들판까지. 난 다 보지도 못했어. 모두 다 알에서 나왔지?” 어미가 자리에서 일어나며 말했다. “아니, 아직 아니네. 제일 큰 알이 아직 남아 있구나. 얼마나 걸리려나? 난 정말이지 몹시 피곤한데.” 어미는 다시 둥지에 앉았다.</p>
+                </article>
+            </div>
+
+            <!-- SHEET 2 : [Front] Page 3 | [Back] Page 4 -->
+            <div class="sheet">
+                <article class="page-face front">
+                    <span class="page-number-tag">Page 3</span>
+                    <p>“자, 어찌 되어 가고 있어요?” 한 나이 든 오리가 찾아와 물었다.</p>
+                    <p>어미는 하나 남은 알에 앉아서 말했다. “알 하나가 꽤 오래 걸리네요. 갈라질 생각을 안 해요. 그래도 다른 녀석들 좀 보세요. 최고로 귀여운 아이들이에요. 자기 아빠를 꼭 빼닮았어요. 참! 이런 나쁜…! 남편은 털끝조차 안 비치네!”</p>
+                    <p>노인 오리가 말했다. “아직 갈라지지 않는다는 그 알 좀 들여다봅시다. 이런, 칠면조 알이네. 확실해요. 나도 한번 속았던 적이 있어요. 얼마나 애를 먹었는지 몰라요. 녀석들이 물을 무서워하더라고요. 내가 아무리 악다구니를 쳐도 아무 소용이 없었어요. 그 알 좀 봐요. 확실히 칠면조 알이에요. 내버려 두고 가서 다른 애들한테 헤엄치는 법이나 가르쳐요.”</p>
+                    <p>“아, 조금만 더 앉아 있을게요. 벌써 아주 오랫동안 있었는걸요. 며칠 더 앉아 있는 게 낫겠어요.” “맘대로 해요.” 노파는 어슬렁어슬렁 멀어져 갔다.</p>
+                </article>
+                <article class="page-face back">
+                    <span class="page-number-tag">Page 4</span>
+                    <p>마침내 그 큰 알을 깨고 아기가 나왔다. “삑.” 아기가 아장아장 걸어 나왔는데 엄청나게 크고 못생겼다.</p>
+                    <p>어미는 아기를 쳐다보고는 말했다. “어마어마하게 커다란 오리네. 다른 오리하고 조금도 닮지 않았어. 정말 아기 칠면조일까? 좋아, 좋아! 내가 곧 알아내겠어. 녀석은 물속에 들어갈 거야. 내가 밀어 넣어서라도 말이야.”</p>
+                    <p>다음 날 날씨가 아주 화창해서 태양이 그 초록 우엉 잎을 비추었다. 어미 오리는 성을 둘러싸고 있는 호수로 가족을 모두 이끌었다. 첨벙! 어미가 물속으로 들어갔다.</p>
+                    <p>“꽥, 꽥!” 아기 오리가 한 마리, 한 마리씩 물에 들어갔다. 머리까지 풍덩 빠졌다. 하지만 눈 깜짝할 새 위로 올라와서 완벽하게 둥둥 떠다녔다. 다리가 저절로 움직여서 모두가 호수에 떠 있었다. 그 커다랗고 못생긴 회색 오리조차 내내 헤엄쳤다.</p>
+                </article>
+            </div>
+
+            <!-- SHEET 3 : [Front] Page 5 | [Back] Page 6 -->
+            <div class="sheet">
+                <article class="page-face front">
+                    <span class="page-number-tag">Page 5</span>
+                    <p>“이런, 칠면조가 아니야. 발도 멋지게 잘 움직이네. 몸도 곧게 펴고. 어쨌거나 내 아들이야. 찬찬히 보면 꽤 잘생겼어. 꽥, 꽥 엄마한테 와라. 엄마가 세상으로 데리고 가서 오리 농장을 보여줄게. 그래도 엄마 옆에 바싹 붙어 있어, 밟히지 않게. 고양이 조심하고!”</p>
+                    <p>그렇게 오리 가족은 농장으로 나아갔다. 그곳에 큰 소동이 벌어지고 있었다. 오리 가족들이 장어 대가리를 두고 싸움을 벌이고 있었기 때문이다. 결국 고양이가 낚아채갔다. “보라고, 저게 세상이야.” 어미도 그 장어 대가리에 군침이 돌았기에 부리를 핥으며 말했다.</p>
+                    <p>“다리를 움직여. 바쁘게 돌아다녀. 저기 나이 든 오리 할머니한테 인사하고. 저 할머니는 아주 고상한 분이야. 스페인 피가 흐르지. 그래서 저리 살집이 좋은 거란다. 다리에 빨간 끈 조각 좀 보렴. 멋지지. 오리가 얻을 수 있는 최고의 표시란다.”</p>
+                </article>
+                <article class="page-face back">
+                    <span class="page-number-tag">Page 6</span>
+                    <p>아기들은 엄마가 시키는 대로 했다. 이들 주위로 다른 오리들이 구경하면서 크게 외쳤다. “여기 좀 봐요! 또 새끼들이 태어났나 보네. 여기 오리가 부족한 줄 아나? 게다가, 저런! 뭐 저렇게나 못생긴 오리가 다 있지! 못 봐주겠군.” 어떤 오리 한 마리가 앞으로 나서더니 회색 오리 목을 콱 물었다.</p>
+                    <p>어미가 소리쳤다. “그 애 내버려 둬. 그 애는 아무 짓도 안 할 거예요. 그 애가 뭘 어쨌다고 그러는 거야?” 그러자 목을 물었던 오리가 말했다. “안 하겠지. 근데 너무 크고 이상하잖아. 그러니까 한 번 호되게 맞아야 된다고.”</p>
+                    <p>그래서 그곳에서 편안하게 지냈다. 하지만 알에서 마지막으로 나온 그 가엾은 오리, 아주 못생긴 오리는 다른 오리 그리고 닭들한테 이리저리 쪼이고 밀리고 놀림을 당했다.</p>
+                </article>
+            </div>
+
+            <!-- SHEET 4 : [Front] Page 7 | [Back] Page 8 -->
+            <div class="sheet">
+                <article class="page-face front">
+                    <span class="page-number-tag">Page 7</span>
+                    <p>형제자매조차 이 아기 오리한테 못되게 굴었다. 형제들은 언제나 이렇게 말했다. “아, 저 고양이가 너를 확 잡아버리면 좋겠어. 이 못생긴 녀석아.” 어미 오리도 말했다. “차라리 멀리 가버리면 좋겠구나.”</p>
+                    <p>그래서 아기 오리는 달아났다. 울타리를 넘어 멀리 달아났다. 마침내 들오리들이 사는 커다란 늪지에 이르렀다. 그곳에서 지치고 상심한 채 밤새도록 누워 있었다.</p>
+                    <p>탕! 탕! 허공에 총소리가 울려 퍼졌다. 사냥개들이 뛰어들었다. 사냥개는 아기 오리를 건드리지 않고 계속 걸어갔다. 아기 오리는 한숨을 푹 내쉬었다. “천만다행이야. 내가 엄청나게 못생겨서 저 개도 굳이 나를 물려고 들지 않네.”</p>
+                </article>
+                <article class="page-face back">
+                    <span class="page-number-tag">Page 8</span>
+                    <p>저녁 늦게, 작고 허름한 가축우리에 도착했다. 거기, 한 노파가 고양이 한 마리와 암탉 한 마리와 함께 살고 있었다. 하지만 오리는 알을 하나도 낳지 못했고, 고양이와 암탉은 오리를 무시했다.</p>
+                    <p>“나는 넓은 세상으로 나가는 게 좋겠어.” 그렇게 오리는 그 집을 떠나 길을 나섰다. 곧 물을 찾아 헤엄도 치고 물장구도 쳤다. 하지만 살아있는 동물은 모두가 아기 오리가 못생겼다며 무시했다.</p>
+                    <p>어느 날 저녁, 갈대밭에서 아주 멋지고 커다란 새 무리가 나타났다. 우아하고 긴 목이 달렸는데 새하얗게 빛났다. 백조였다. 못생긴 아기 오리는 이 새들을 지켜보면서 왠지 모르게 마음이 불편했다. 하지만 그 어느 것보다 그 새들을 사랑했다.</p>
+                </article>
+            </div>
+
+            <!-- SHEET 5 : [Front] Page 9 | [Back] Page 10 -->
+            <div class="sheet">
+                <article class="page-face front">
+                    <span class="page-number-tag">Page 9</span>
+                    <p>겨울은 점점 추워졌다. 이윽고 물이 꽁꽁 얼어서 오리는 얼음 속에서 꽁꽁 얼어붙고 말았다. 아침 일찍 농부가 지나가다가 보고 연못으로 가서 얼음을 깨고는 아기 오리를 데려갔다.</p>
+                    <p>오리가 이 혹독한 겨울 동안 견뎌야 했던 고난과 비참함은 너무 슬퍼서 이루 다 말로 표현할 수 없을 것이다. 따뜻한 태양이 한 번 더 비출 때, 아름다운 봄이 되었다.</p>
+                    <p>그런데 문득 아기 오리는 날개를 들어보았다. 전보다 더 힘차게 공기를 갈랐다. 미운 오리 앞 덤불 속에서 아름다운 하얀 백조 세 마리가 다가왔다.</p>
+                </article>
+                <article class="page-face back">
+                    <span class="page-number-tag">Page 10</span>
+                    <p>“나를 죽여요!” 가엾은 아기 오리가 말했다. 그러면서 죽음을 기다리며 물 위로 고개를 숙였다. 하지만 거기 투명한 시냇물에 비친……. 오리가 본 모습은?</p>
+                    <p>더 이상 꼴사납고 못생긴 잿빛 새의 모습은 보이지 않았다. 바로 자신의 모습이 보였다! 오리 농장에서 태어난 건 아무 문제가 아니다……, 백조의 알에서 나왔다면.</p>
+                    <p>어린아이들이 소리쳤다. “새로운 백조가 제일 잘생겼구나. 아주 젊고 무척 예뻐.” 어린 백조는 깃털을 부풀리고는 가녀린 목을 높이 들고 가슴이 터질 듯 소리쳤다.</p>
+                    <p>“못생긴 오리였을 때는 이렇게나 큰 행복을 꿈도 꿀 수 없었어.”</p>
+                </article>
+            </div>
+        </main>
+
+        <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="progress-info">
+            <span class="current-page" id="pageIndicator">Page 1</span>
+            <span class="percent-text" id="percentIndicator">0%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <script>
+        let sheets = document.querySelectorAll('.sheet');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const percentIndicator = document.getElementById('percentIndicator');
+        const progressFill = document.getElementById('progressFill');
+
+        let currentSheet = 0;
+        let totalSheets = sheets.length;
+
+        // z-index 동적 배치 (첫 장이 가장 맨 위)
+        function updateZIndex() {
+            sheets = document.querySelectorAll('.sheet');
+            totalSheets = sheets.length;
+
+            sheets.forEach((sheet, index) => {
+                if (index < currentSheet) {
+                    // 뒤집힌 종이들은 순서대로 쌓임
+                    sheet.style.zIndex = index + 1;
+                } else {
+                    // 안 뒤집힌 종이들은 역순으로 쌓임 (0번 시트가 맨 위)
+                    sheet.style.zIndex = totalSheets - index;
+                }
+            });
+        }
+
+        function updateUI() {
+            updateZIndex();
+
+            prevBtn.disabled = (currentSheet === 0);
+            nextBtn.disabled = (currentSheet === totalSheets);
+
+            // 동적 총 페이지 계산 (각 시트당 2페이지)
+            const totalPages = totalSheets * 2;
+
+            if (currentSheet === 0) {
+                pageIndicator.textContent = `Page 1`;
+            } else if (currentSheet === totalSheets) {
+                pageIndicator.textContent = `Page ${totalPages}`;
+            } else {
+                let leftPage = currentSheet * 2;
+                let rightPage = leftPage + 1;
+
+                if (rightPage > totalPages) {
+                    pageIndicator.textContent = `Page ${leftPage}`;
+                } else {
+                    pageIndicator.textContent = `Page ${leftPage} - ${rightPage}`;
+                }
+            }
+
+            let progress = totalSheets > 0 ? Math.round((currentSheet / totalSheets) * 100) : 0;
+            percentIndicator.textContent = `${progress}%`;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        function goNext() {
+            if (currentSheet < totalSheets) {
+                sheets[currentSheet].classList.add('flipped');
+                currentSheet++;
+                updateUI();
+            }
+        }
+
+        function goPrev() {
+            if (currentSheet > 0) {
+                currentSheet--;
+                sheets[currentSheet].classList.remove('flipped');
+                updateUI();
+            }
+        }
+
+        nextBtn.addEventListener('click', goNext);
+        prevBtn.addEventListener('click', goPrev);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') goNext();
+            if (e.key === 'ArrowLeft') goPrev();
+        });
+
+        // 초기화
+        updateUI();
+    </script>
+</body>
+</html>

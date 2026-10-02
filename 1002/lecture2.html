@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Gothic+Coding&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Gothic+Coding&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <style>
+        .nanum-brush-script-regular {
+            font-family: "Nanum Brush Script", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .philosopher-regular {
+            font-family: "Philosopher", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .philosopher-bold {
+            font-family: "Philosopher", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .philosopher-regular-italic {
+            font-family: "Philosopher", sans-serif;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .philosopher-bold-italic {
+            font-family: "Philosopher", sans-serif;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        /**/
+        #philosopher:checked+label {
+            font-family: "Philosopher", sans-serif;
+            font-weight: 700;
+            font-style: normal;
+            color: aqua;
+            font-size: 1.5em;
+        }
+
+        .nanum-brush-script-regular {
+            font-family: "Nanum Brush Script", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        #nanum:checked +label{
+            font-family: "Nanum Brush Script", cursive;
+            font-weight: 400;
+            font-style: normal;
+            color:aqua;
+            font-size: 1.5rem;
+         }
+
+        .d1:has(#nanum:checked) ~ .d2 #msg{
+            font-family: "Nanum Brush Script" ,sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            color: red;
+            font-size:1.5rem;
+         }
+         .d1:has(#philosopher:checked) ~ .d2 #msg{
+            font-family: "Philosopher", cursive;
+            font-weight: 400;
+            font-style: normal;
+            color:aqua;
+            font-size: 1.5rem;
+         }
+
+         .textarea .d2{
+            max-width: 600px;
+            text-align: center;
+         }
+
+    </style>
+</head>
+
+<body>
+    <div class="d1">
+        <input type="radio" name="font" id="nanum" checked>
+        <label for="nanum">나눔 폰트</label>
+        <input type="radio" name="font" id="philosopher">
+        <label for="philosopher">philosopher</label>
+    </div>
+    <div class="d2">
+        <textarea rows="5" cols="80" id="msg"></textarea>
+    </div>
+    <button type="submit">글 전송</button>
+
+</body>
+
+</html>
